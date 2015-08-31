@@ -13,13 +13,13 @@ module Serial
     def call(context = nil, value)
       block = @block
       HashBuilder.build(context) do |builder|
-        instance_exec(builder, value, &block)
+        builder.exec(value, &block)
       end
     end
 
     def to_proc
       block = @block
-      proc { |builder, value| instance_exec(builder, value, &block) }
+      proc { |builder, value| builder.exec(value, &block) }
     end
   end
 
@@ -31,7 +31,15 @@ module Serial
     def initialize(context, &block)
       @context = context
       @data = {}
-      @context.instance_exec(self, &block)
+      yield self
+    end
+
+    def exec(*args, &block)
+      if @context
+        @context.instance_exec(self, *args, &block)
+      else
+        block.call(self, *args)
+      end
     end
 
     def to_h
@@ -45,7 +53,7 @@ module Serial
     def attribute(key, value = nil, &block)
       @data[key.to_s] = if block
         HashBuilder.build(@context) do |builder|
-          instance_exec(builder, value, &block)
+          builder.exec(value, &block)
         end
       else
         value
@@ -54,15 +62,15 @@ module Serial
 
     def collection(key, &block)
       list = ArrayBuilder.build(@context) do |builder|
-        instance_exec(builder, &block)
+        builder.exec(&block)
       end
       attribute(key, list)
     end
 
     def map(key, list, &block)
-      collection(key) do |h|
+      collection(key) do |builder|
         list.each do |item|
-          h.element { |h| instance_exec(h, item, &block) }
+          builder.element { |element| element.exec(item, &block) }
         end
       end
     end
@@ -76,7 +84,15 @@ module Serial
     def initialize(context, &block)
       @context = context
       @data = []
-      @context.instance_exec(self, &block)
+      yield self
+    end
+
+    def exec(*args, &block)
+      if @context
+        @context.instance_exec(self, *args, &block)
+      else
+        block.call(self, *args)
+      end
     end
 
     def to_a
@@ -89,13 +105,13 @@ module Serial
 
     def element(&block)
       @data << HashBuilder.build(@context) do |builder|
-        instance_exec(builder, &block)
+        builder.exec(&block)
       end
     end
 
     def collection(key, &block)
       @data << ArrayBuilder.build(@context) do |builder|
-        instance_exec(builder, &block)
+        builder.exec(&block)
       end
     end
   end
