@@ -24,16 +24,22 @@ describe Serial do
       ]
     })
 
+    class MyContext
+      def uppercase(value)
+        value.to_s.upcase
+      end
+    end
+
     # app/serializers/person_serializer.rb
     PersonSerializer = Serial::Serializer.new do |h, person|
       h.attribute(:id, person.id)
-      h.attribute(:name, person.name)
+      h.attribute(:name, uppercase(person.name))
     end
 
     # app/serializers/project_serializer.rb
     ProjectSerializer = Serial::Serializer.new do |h, project|
       h.attribute(:id, project.id)
-      h.attribute(:projectName, project.name)
+      h.attribute(:projectName, uppercase(project.name))
       h.attribute(:description, project.description)
 
       h.attribute(:client, project.client) do |h, client|
@@ -49,12 +55,11 @@ describe Serial do
 
         h.attribute(:person, assignment.person, &PersonSerializer)
       end
-
     end
 
-    expect(ProjectSerializer.call(project)).to eq({
+    expect(ProjectSerializer.call(MyContext.new, project)).to eq({
       "id" => 13,
-      "projectName" => "ProjectPuzzle",
+      "projectName" => "PROJECTPUZZLE",
       "description" => "ProjectPuzzle is our own product",
       "client" => {
         "id" => 5,
@@ -63,11 +68,11 @@ describe Serial do
       "people" => [
         {
           "id" => 1,
-          "name" => "Kim"
+          "name" => "KIM"
         },
         {
           "id" => 2,
-          "name" => "Jonas"
+          "name" => "JONAS"
         }
       ],
       "assignments" => [
@@ -76,7 +81,7 @@ describe Serial do
           "duration" => "forever",
           "person" => {
             "id" => 1,
-            "name" => "Kim"
+            "name" => "KIM"
           }
         },
         {
@@ -84,7 +89,7 @@ describe Serial do
           "duration" => "forever ever",
           "person" => {
             "id" => 2,
-            "name" => "Jonas"
+            "name" => "JONAS"
           }
         }
       ]
