@@ -1,22 +1,4 @@
 require 'spec_helper'
-require 'ostruct'
-
-kim = OpenStruct.new({ id: 1, name: "Kim" })
-jonas = OpenStruct.new({ id: 2, name: "Jonas" })
-project = OpenStruct.new({
-  id: 13,
-  name: "ProjectPuzzle",
-  description: "ProjectPuzzle is our own product",
-  client: OpenStruct.new({
-    id: 5,
-    name: "Elabs AB"
-  }),
-  people: [kim, jonas],
-  assignments: [
-    OpenStruct.new({ id: 1, duration: "forever", person: kim }),
-    OpenStruct.new({ id: 2, duration: "forever ever", person: jonas }),
-  ]
-})
 
 class MyContext
   def uppercase(value)
@@ -52,6 +34,26 @@ ProjectSerializer = Serial::Serializer.new do |h, project|
 end
 
 describe Serial do
+  let(:kim) { double({ id: 1, name: "Kim" }) }
+  let(:jonas) { double({ id: 2, name: "Jonas" }) }
+
+  let(:project) do
+    double({
+      id: 13,
+      name: "ProjectPuzzle",
+      description: "ProjectPuzzle is our own product",
+      client: double({
+        id: 5,
+        name: "Elabs AB"
+      }),
+      people: [kim, jonas],
+      assignments: [
+        double({ id: 1, duration: "forever", person: kim }),
+        double({ id: 2, duration: "forever ever", person: jonas }),
+      ]
+    })
+  end
+
   it 'has a version number' do
     expect(Serial::VERSION).not_to be nil
   end
