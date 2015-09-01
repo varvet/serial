@@ -34,7 +34,7 @@ end
 # app/serializers/project_serializer.rb
 ProjectSerializer = Serializer.new do |h, project|
   h.attribute(:id, project.id)
-  h.attribute(:project_name, project.name)
+  h.attribute(:projectName, project.name)
   h.attribute(:description, project.description)
 
   h.attribute(:client, project.client) do |h, client|
@@ -42,14 +42,15 @@ ProjectSerializer = Serializer.new do |h, project|
     h.attribute(:name, client.name)
   end
 
-  h.map(:people, project.people, &PersonSerializer)
-
   h.map(:assignments, project.assignments) do |h, assignment|
     h.attribute(:id, assignment.id)
     h.attribute(:duration, assignment.duration)
 
+    # This is how you compose serializers.
     h.attribute(:person, assignment.person, &PersonSerializer)
   end
+
+  h.map(:people, project.people, &PersonSerializer)
 end
 ```
 
