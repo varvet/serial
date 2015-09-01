@@ -1,18 +1,17 @@
 module Serial
   # @api private
   class ArrayBuilder < Builder
-    def initialize(context, &block)
+    def initialize(context)
       @context = context
       @data = []
-      yield self
     end
 
     def element(&block)
-      @data << build(HashBuilder, &block)
+      @data << HashBuilder.build(@context, &block)
     end
 
     def collection(key, &block)
-      @data << build(ArrayBuilder, &block)
+      @data << ArrayBuilder.build(@context, &block)
     end
   end
 end

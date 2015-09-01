@@ -1,19 +1,18 @@
 module Serial
   # @api private
   class HashBuilder < Builder
-    def initialize(context, &block)
+    def initialize(context)
       @context = context
       @data = {}
-      yield self
     end
 
     def attribute(key, value = nil, &block)
-      value = build(HashBuilder, value, &block) if block
+      value = HashBuilder.build(@context, value, &block) if block
       @data[key.to_s] = value
     end
 
     def collection(key, &block)
-      list = build(ArrayBuilder, &block)
+      list = ArrayBuilder.build(@context, &block)
       attribute(key, list)
     end
 
