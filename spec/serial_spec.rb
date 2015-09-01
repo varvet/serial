@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 class MyContext
   def uppercase(value)
     value.to_s.upcase
