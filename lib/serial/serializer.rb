@@ -4,8 +4,8 @@ module Serial
       @block = block
     end
 
-    def map(list)
-      list.map { |item| call(item) }
+    def map(context = nil, list)
+      list.map { |item| call(context, item) }
     end
 
     def call(context = nil, value)
