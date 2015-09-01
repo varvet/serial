@@ -1,17 +1,10 @@
 module Serial
+  # @api private
   class HashBuilder < Builder
-    def self.build(context, &block)
-      new(context, &block).to_h
-    end
-
     def initialize(context, &block)
       @context = context
       @data = {}
       yield self
-    end
-
-    def to_h
-      @data
     end
 
     def attribute(key, value = nil, &block)

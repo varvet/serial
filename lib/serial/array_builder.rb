@@ -1,17 +1,10 @@
 module Serial
+  # @api private
   class ArrayBuilder < Builder
-    def self.build(context, &block)
-      new(context, &block).to_a
-    end
-
     def initialize(context, &block)
       @context = context
       @data = []
       yield self
-    end
-
-    def to_a
-      @data
     end
 
     def element(&block)
