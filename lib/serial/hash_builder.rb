@@ -19,11 +19,8 @@ module Serial
     end
 
     def attribute(key, value = nil, &block)
-      @data[key.to_s] = if block
-        build(HashBuilder, value, &block)
-      else
-        value
-      end
+      value = build(HashBuilder, value, &block) if block
+      @data[key.to_s] = value
     end
 
     def collection(key, &block)
