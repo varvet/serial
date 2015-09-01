@@ -12,8 +12,7 @@ module Serial
     end
 
     def collection(key, &block)
-      list = ArrayBuilder.build(@context, &block)
-      attribute(key, list)
+      attribute(key, ArrayBuilder.build(@context, &block))
     end
 
     def map(key, list, &block)
