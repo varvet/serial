@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Serial::VERSION
   spec.authors       = ["Jonas Nicklas", "Kim Burgestrand"]
   spec.email         = ["jonas@elabs.se", "kim@elabs.se"]
+  spec.license       = "MIT"
 
   spec.summary       = %q{Plain old Ruby for generating simple data structures from object graphs.}
   spec.homepage      = "https://github.com/elabs/serial"
