@@ -19,15 +19,11 @@ module Serial
     end
 
     def element(&block)
-      @data << HashBuilder.build(@context) do |builder|
-        builder.exec(&block)
-      end
+      @data << build(HashBuilder, &block)
     end
 
     def collection(key, &block)
-      @data << ArrayBuilder.build(@context) do |builder|
-        builder.exec(&block)
-      end
+      @data << build(ArrayBuilder, &block)
     end
   end
 end

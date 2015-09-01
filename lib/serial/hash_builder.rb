@@ -20,18 +20,14 @@ module Serial
 
     def attribute(key, value = nil, &block)
       @data[key.to_s] = if block
-        HashBuilder.build(@context) do |builder|
-          builder.exec(value, &block)
-        end
+        build(HashBuilder, value, &block)
       else
         value
       end
     end
 
     def collection(key, &block)
-      list = ArrayBuilder.build(@context) do |builder|
-        builder.exec(&block)
-      end
+      list = build(ArrayBuilder, &block)
       attribute(key, list)
     end
 
