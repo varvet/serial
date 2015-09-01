@@ -14,10 +14,6 @@ module Serial
       @data
     end
 
-    def as_json(*)
-      @data
-    end
-
     def element(&block)
       @data << build(HashBuilder, &block)
     end

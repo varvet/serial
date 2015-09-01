@@ -14,10 +14,6 @@ module Serial
       @data
     end
 
-    def as_json(*)
-      @data
-    end
-
     def attribute(key, value = nil, &block)
       value = build(HashBuilder, value, &block) if block
       @data[key.to_s] = value
