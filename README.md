@@ -53,6 +53,13 @@ ProjectSerializer = Serializer.new do |h, project|
 end
 ```
 
+Whenever you need to use them you invoke them like this:
+
+``` ruby
+person = Person.find(1)
+render json: PersonSerializer.call(self, person)
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run
