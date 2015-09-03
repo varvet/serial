@@ -3,6 +3,12 @@
 Serial is a serialization library. Its primary purpose is to generate simple
 datastructures from object graphs.
 
+Serial is sponsored by [Elabs][].
+
+[![elabs logo][]][Elabs]
+
+[Elabs]: http://www.elabs.se/
+[elabs logo]: ./elabs-logo.png?raw=true
 
 ## Installation
 
