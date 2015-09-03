@@ -69,8 +69,9 @@ end
 Whenever you need to use them you invoke them like this:
 
 ``` ruby
-person = Person.find(1)
-render json: PersonSerializer.call(self, person)
+project = Project.find(…)
+serialized = ProjectSerializer.call(self, project) # => { "id" => …, "projectName" => …, "client" => { … }, … }
+render json: serialized
 ```
 
 ## Development
