@@ -44,7 +44,9 @@ module Serial
 
     def to_proc
       block = @block
-      proc { |builder, value| builder.exec(value, &block) }
+      proc do |builder, *args|
+        builder.exec(*args, &block)
+      end
     end
   end
 end
