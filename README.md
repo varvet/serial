@@ -74,6 +74,16 @@ serialized = ProjectSerializer.call(self, project) # => { "id" => …, "projectN
 render json: serialized
 ```
 
+## The DSL
+
+- `Serializer#call`
+- `Serializer#map`
+- `HashBuilder#attribute`
+- `HashBuilder#collection`
+- `HashBuilder#map`
+- `ArrayBuilder#element`
+- `ArrayBuilder#collection`
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run
