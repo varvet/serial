@@ -1,5 +1,10 @@
 # Serial
 
+[![Build Status](https://secure.travis-ci.org/elabs/serial.png?branch=master)](http://travis-ci.org/elabs/serial)
+[![Dependency Status](https://gemnasium.com/elabs/serial.png)](https://gemnasium.com/elabs/serial)
+[![Code Climate](https://codeclimate.com/github/elabs/serial.png)](https://codeclimate.com/github/elabs/serial)
+[![Gem Version](https://badge.fury.io/rb/serial.png)](http://badge.fury.io/rb/serial)
+
 Serial is a serialization library. Its primary purpose is to generate simple
 datastructures from object graphs.
 
