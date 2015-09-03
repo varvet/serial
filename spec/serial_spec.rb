@@ -4,13 +4,11 @@ class MyContext
   end
 end
 
-# app/serializers/person_serializer.rb
 PersonSerializer = Serial::Serializer.new do |h, person|
   h.attribute(:id, person.id)
   h.attribute(:name, uppercase(person.name))
 end
 
-# app/serializers/project_serializer.rb
 ProjectSerializer = Serial::Serializer.new do |h, project|
   h.attribute(:id, project.id)
   h.attribute(:projectName, uppercase(project.name))
@@ -61,7 +59,6 @@ describe Serial do
   end
 
   it 'works without context object' do
-    # app/serializers/person_serializer.rb
     person_serializer = Serial::Serializer.new do |h, person|
       h.attribute(:id, person.id)
       h.attribute(:name, prefix(person.name))
