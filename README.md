@@ -26,13 +26,13 @@ You can set up your serializers like this:
 
 ``` ruby
 # app/serializers/person_serializer.rb
-PersonSerializer = Serializer.new do |h, person|
+PersonSerializer = Serial::Serializer.new do |h, person|
   h.attribute(:id, person.id)
   h.attribute(:name, person.name)
 end
 
 # app/serializers/project_serializer.rb
-ProjectSerializer = Serializer.new do |h, project|
+ProjectSerializer = Serial::Serializer.new do |h, project|
   h.attribute(:id, project.id)
   h.attribute(:projectName, project.name)
   h.attribute(:description, project.description)
