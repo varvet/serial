@@ -9,15 +9,14 @@ module Serial
     end
 
     def call(context = nil, value)
-      block = @block
-      HashBuilder.build(context) do |builder|
-        builder.exec(value, &block)
-      end
+      HashBuilder.build(context, value, &@block)
     end
 
     def to_proc
       block = @block
-      proc { |builder, value| builder.exec(value, &block) }
+      proc do |builder, *args|
+        builder.exec(*args, &block)
+      end
     end
   end
 end
