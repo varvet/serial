@@ -1,4 +1,11 @@
 language: ruby
 rvm:
-  - 2.2.2
+  - 2.1
+  - 2.2
+  - ruby-head
+  - jruby
+  - rbx-2
 before_install: gem install bundler -v 1.10.6
+matrix:
+  allow_failures:
+    - rvm: ruby-head
