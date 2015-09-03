@@ -6,8 +6,8 @@
 [![Gem Version](https://img.shields.io/gem/v/serial.svg)](http://badge.fury.io/rb/serial)
 [![Inline docs](http://inch-ci.org/github/elabs/serial.svg?branch=master&style=shields)](http://inch-ci.org/github/elabs/serial)
 
-Serial is a serialization library. Its primary purpose is to generate simple
-datastructures from object graphs.
+Serial is a short and simple serialization library. Its primary purpose is to generate simple
+datastructures from object graphs, in other words to help you serialize your data.
 
 Serial is sponsored by [Elabs][].
 
