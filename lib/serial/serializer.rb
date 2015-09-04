@@ -3,12 +3,10 @@ module Serial
     # Create a new Serializer, using the block as instructions.
     #
     # @example
+    #   # app/serializers/person_serializer.rb
     #   PersonSerializer = Serial::Serializer.new do |h, person|
-    #     h.attribute(:id, person.id)
     #     h.attribute(:name, person.name)
     #   end
-    #
-    #   PersonSerializer.call(…)
     #
     # @yield [builder, *args]
     # @yieldparam builder [HashBuilder]
