@@ -17,7 +17,7 @@ module Serial
       @block = block
     end
 
-    # Invoke a Serializer, optionally passing it a context to be evaluated in.
+    # Serialize an object with this serializer, optionally within a context.
     #
     # @example with context, the serializer block is evaluated inside the context
     #   # app/serializers/person_serializer.rb
@@ -51,14 +51,50 @@ module Serial
     #     render json: Person::Serializer.call(person)
     #   end
     #
+    # @param context
+    # @param value
+    # @return [Hash]
     def call(context = nil, value)
       HashBuilder.build(context, value, &@block)
     end
 
+    # Serialize a list of objects with this serializer, optionally within a context.
+    #
+    # @example
+    #   # app/serializers/person_serializer.rb
+    #   PersonSerializer = Serial::Serializer.new do |h, person|
+    #     h.attribute(:id, person.id)
+    #     h.attribute(:url, people_url(person))
+    #   end
+    #
+    #   # app/controllers/person_controller.rb
+    #   def index
+    #     people = Person.all
+    #     render json: PersonSerializer.map(self, people)
+    #   end
+    #
+    # @see #call see #call for an explanation of the context parameter
+    # @param (see #call)
+    # @return [Array]
     def map(context = nil, list)
       list.map { |item| call(context, item) }
     end
 
+    # Serializer composition!
+    #
+    # @example
+    #   # app/serializers/person_serializer.rb
+    #   PersonSerializer = Serial::Serializer.new do |h, person|
+    #     h.attribute(:name, person.name)
+    #   end
+    #
+    #   # app/serializers/project_serializer.rb
+    #   ProjectSerializer = Serial::Serializer.new do |h, project|
+    #     h.attribute(:projectName, project.name)
+    #     h.attribute(:owner, project.owner, &PersonSerializer)
+    #   end
+    #
+    # @return [Proc]
     def to_proc
       block = @block
       proc do |builder, *args|
