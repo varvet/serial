@@ -78,8 +78,11 @@ render json: serialized
 
 ## The DSL
 
+TODO:
+
 - `Serializer#call`
 - `Serializer#map`
+- `Serializer#to_proc`
 - `HashBuilder#attribute`
 - `HashBuilder#collection`
 - `HashBuilder#map`
