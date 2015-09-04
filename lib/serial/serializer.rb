@@ -32,7 +32,24 @@ module Serial
     #     render json: PersonSerializer.call(self, person)
     #   end
     #
-    # @example (TODO) without context, the serializer block is evaluated using normal closure rules
+    # @example without context, the serializer block is evaluated using normal closure rules
+    #   # app/models/person.rb
+    #   class Person
+    #     Serializer = Serial::Serializer.new do |h, person|
+    #       h.attribute(:id, person.id)
+    #       h.attribute(:available_roles, available_roles)
+    #     end
+    #
+    #     def self.available_roles
+    #       …
+    #     end
+    #   end
+    #
+    #   # app/controllers/person_controller.rb
+    #   def show
+    #     person = Person.find(…)
+    #     render json: Person::Serializer.call(person)
+    #   end
     #
     def call(context = nil, value)
       HashBuilder.build(context, value, &@block)
