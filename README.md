@@ -32,6 +32,8 @@ And then execute:
 
 ## Using Serial
 
+*Full reference: [Serial::Serializer](http://www.rubydoc.info/gems/serial/Serial/Serializer)*
+
 ``` ruby
 # app/serializers/person_serializer.rb
 PersonSerializer = Serial::Serializer.new do |h, person|
@@ -91,10 +93,13 @@ end
 
 ## The DSL
 
-### Simple attributes
+*Full reference: [Serial::HashBuilder](http://www.rubydoc.info/gems/serial/Serial/HashBuilder)*
+*Full reference: [Serial::ArrayBuilder](http://www.rubydoc.info/gems/serial/Serial/ArrayBuilder)*
 
 - *All keys are turned into strings.*
 - *There is no automatic camel-casing. You name your keys the way you want them.*
+
+### Simple attributes
 
 ``` ruby
 ProjectSerializer = Serial::Serializer.new do |h, project|
