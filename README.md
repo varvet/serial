@@ -32,7 +32,7 @@ And then execute:
 
 ## Using Serial
 
-*Full reference: [Serial::Serializer](http://www.rubydoc.info/gems/serial/Serial/Serializer)*
+*Full reference: [Serial::Serializer](http://www.rubydoc.info/gems/serial/Serial/Serializer).*
 
 ``` ruby
 # app/serializers/person_serializer.rb
