@@ -117,15 +117,17 @@ end
 The low-level interface powering `#map` is `#collection`.
 
 ``` ruby
-h.collection(:indices) do |l|
-  l.element { |h| h.attribute(…)  }
-  l.element { |h| h.attribute(…)  }
+ProjectSerializer = Serial::Serializer.new do |h, project|
+  h.collection(:indices) do |l|
+    l.element { |h| h.attribute(…)  }
+    l.element { |h| h.attribute(…)  }
 
-  l.collection do |l|
-    l.element { … }
-    l.element { … }
-  end
-end # => [{…}, {…}, [{…}, {…}]]
+    l.collection do |l|
+      l.element { … }
+      l.element { … }
+    end
+  end # => [{…}, {…}, [{…}, {…}]]
+end
 ```
 
 ## Development
