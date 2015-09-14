@@ -1,6 +1,6 @@
 module Serial
-  # @api private
   class HashBuilder < Builder
+    # @api private
     def initialize(context)
       @context = context
       @data = {}
@@ -27,10 +27,12 @@ module Serial
       @data[key.to_s] = value
     end
 
+    # @api public
     def collection(key, &block)
       attribute(key, ArrayBuilder.build(@context, &block))
     end
 
+    # @api public
     def map(key, list, &block)
       collection(key) do |builder|
         list.each do |item|
