@@ -38,7 +38,12 @@ module Serial
     #     l.element do |h|
     #       h.attribute(…)
     #     end
-    #   end # => { "people" => [{…}, {…}] }
+    #     l.collection do |l|
+    #       l.element do |h|
+    #         h.attribute(…)
+    #       end
+    #     end
+    #   end # => { "people" => [{…}, {…}, [{…}]] }
     #
     # @see ArrayBuilder
     # @param [#to_s] key
@@ -53,7 +58,7 @@ module Serial
     # @example
     #   h.map(:people, project.people) do |h, person|
     #     h.attribute(:name, person.name)
-    #   end
+    #   end # => { "people" => [{ "name" => … }] }
     #
     # @see #collection
     # @param [#to_s] key
