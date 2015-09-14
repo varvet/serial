@@ -10,7 +10,7 @@ module Serial
     #
     # @yield [builder, value]
     # @yieldparam builder [HashBuilder]
-    # @yieldparam value from #call or #map
+    # @yieldparam value from {#call} or {#map}
     def initialize(&block)
       @block = block
     end
@@ -88,8 +88,8 @@ module Serial
     #
     #   # app/serializers/project_serializer.rb
     #   ProjectSerializer = Serial::Serializer.new do |h, project|
-    #     h.attribute(:projectName, project.name)
     #     h.attribute(:owner, project.owner, &PersonSerializer)
+    #     h.map(:people, project.people, &PersonSerializer)
     #   end
     #
     # @return [Proc]

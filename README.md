@@ -30,7 +30,7 @@ And then execute:
 
     $ bundle
 
-## Example usage
+## The DSL
 
 ``` ruby
 # app/serializers/person_serializer.rb
@@ -44,16 +44,13 @@ ProjectSerializer = Serial::Serializer.new do |h, project|
   h.attribute(:id, project.id)
   h.attribute(:projectName, project.name)
 
-  # This is how you create nested attributes.
   h.attribute(:client, project.client) do |h, client|
     h.attribute(:id, client.id)
     h.attribute(:name, client.name)
   end
 
-  # This is how you may compose serializers.
   h.attribute(:person, assignment.person, &PersonSerializer)
 
-  # This is how you create lists.
   h.map(:assignments, project.assignments) do |h, assignment|
     h.attribute(:id, assignment.id)
     h.attribute(:duration, assignment.duration)
@@ -63,17 +60,37 @@ end
 # app/controllers/project_controller.rb
 def show
   project = Project.find(…)
-  render json: ProjectSerializer.call(self, project) { "id" => …, "projectName" => …, "client" => { … }, … }
+  render json: ProjectSerializer.call(self, project) # { "id" => …, "projectName" => …, "client" => { … }, … }
 end
 ```
 
-## The DSL
+### Serializing a single object
 
-TODO:
+``` ruby
+project = Project.find(…)
+context = self
+ProjectSerializer.call(context, project) # => { … }
+```
 
-- `Serializer#call`
-- `Serializer#map`
-- `Serializer#to_proc`
+### Serializing an array
+
+``` ruby
+project = Project.all
+context = self
+ProjectSerializer.map(context, project) # => [{ … }, …]
+```
+
+### Serializer composition
+
+``` ruby
+ProjectSerializer = Serial::Serializer.new do |h, project|
+  h.attribute(:owner, project.owner, &PersonSerializer)
+  h.map(:people, project.people, &PersonSerializer)
+end
+```
+
+
+
 - `HashBuilder#attribute`
 - `HashBuilder#collection`
 - `HashBuilder#map`
