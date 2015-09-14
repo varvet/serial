@@ -30,7 +30,7 @@ And then execute:
 
     $ bundle
 
-## The DSL
+## Using Serial
 
 ``` ruby
 # app/serializers/person_serializer.rb
@@ -89,6 +89,8 @@ ProjectSerializer = Serial::Serializer.new do |h, project|
 end
 ```
 
+## The DSL
+
 ### Simple attributes
 
 - *All keys are turned into strings.*
@@ -98,6 +100,16 @@ end
 ProjectSerializer = Serial::Serializer.new do |h, project|
   h.attribute(:id, project.id)
   h.attribute(:displayName, project.display_name)
+end
+```
+
+### Nested attributes
+
+``` ruby
+ProjectSerializer = Serial::Serializer.new do |h, project|
+  h.attribute(:owner, project.owner) do |h, owner|
+    h.attribute(:name, owner.name)
+  end
 end
 ```
 
