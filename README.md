@@ -101,10 +101,32 @@ ProjectSerializer = Serial::Serializer.new do |h, project|
 end
 ```
 
-- `HashBuilder#collection`
-- `HashBuilder#map`
-- `ArrayBuilder#element`
-- `ArrayBuilder#collection`
+### Collections
+
+`#map` is a convenient method for serializing lists of items.
+
+``` ruby
+ProjectSerializer = Serial::Serializer.new do |h, project|
+  h.map(:assignments, project.assignments) do |h, assignment|
+    h.attribute(:id, assignment.id)
+    h.attribute(:duration, assignment.duration)
+  end
+end
+```
+
+The low-level interface powering `#map` is `#collection`.
+
+``` ruby
+h.collection(:indices) do |l|
+  l.element { |h| h.attribute(…)  }
+  l.element { |h| h.attribute(…)  }
+
+  l.collection do |l|
+    l.element { … }
+    l.element { … }
+  end
+end # => [{…}, {…}, [{…}, {…}]]
+```
 
 ## Development
 
