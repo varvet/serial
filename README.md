@@ -30,10 +30,6 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install serial
-
 ## Example usage
 
 ``` ruby
