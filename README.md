@@ -89,9 +89,18 @@ ProjectSerializer = Serial::Serializer.new do |h, project|
 end
 ```
 
+### Simple attributes
 
+- *All keys are turned into strings.*
+- *There is no automatic camel-casing. You name your keys the way you want them.*
 
-- `HashBuilder#attribute`
+``` ruby
+ProjectSerializer = Serial::Serializer.new do |h, project|
+  h.attribute(:id, project.id)
+  h.attribute(:displayName, project.display_name)
+end
+```
+
 - `HashBuilder#collection`
 - `HashBuilder#map`
 - `ArrayBuilder#element`
