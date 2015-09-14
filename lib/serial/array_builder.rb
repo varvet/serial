@@ -12,7 +12,7 @@ module Serial
     end
 
     # @api public
-    def collection(key, &block)
+    def collection(&block)
       @data << ArrayBuilder.build(@context, &block)
     end
   end
