@@ -1,4 +1,5 @@
 module Serial
+  # Using this class you build serializers.
   class Serializer
     # Create a new Serializer, using the block as instructions.
     #
@@ -49,7 +50,7 @@ module Serial
     #     render json: Person::Serializer.call(person)
     #   end
     #
-    # @param [#instance_exec] context
+    # @param context [#instance_exec, nil] context to execute serializer in, or nil to use regular block closure rules.
     # @param value
     # @return [Hash]
     def call(context = nil, value)

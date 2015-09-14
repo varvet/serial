@@ -1,4 +1,6 @@
 module Serial
+  # A builder for building hashes. You most likely just want to look at the
+  # public API methods in this class.
   class HashBuilder < Builder
     # @api private
     def initialize(context)
@@ -17,7 +19,7 @@ module Serial
     #     h.attribute(:name, project.name)
     #   end # => { "project" => { "name" => … } }
     #
-    # @param [#to_s] key
+    # @param key [#to_s]
     # @param value
     # @yield [builder, value] declare nested attribute if block is given
     # @yieldparam builder [HashBuilder] (keep in mind the examples shadow the outer `h` variable)
@@ -46,7 +48,7 @@ module Serial
     #   end # => { "people" => [{…}, {…}, [{…}]] }
     #
     # @see ArrayBuilder
-    # @param [#to_s] key
+    # @param key [#to_s]
     # @yieldparam builder [ArrayBuilder]
     def collection(key, &block)
       attribute(key, ArrayBuilder.build(@context, &block))
@@ -61,8 +63,8 @@ module Serial
     #   end # => { "people" => [{ "name" => … }] }
     #
     # @see #collection
-    # @param [#to_s] key
-    # @param [#each] list
+    # @param key [#to_s]
+    # @param list [#each]
     # @yield [builder, value] yields each value from list to build an array of hashes
     # @yieldparam builder [HashBuilder]
     # @yieldparam value
