@@ -93,7 +93,7 @@ end
 
 ## The DSL
 
-*Full reference: [Serial::HashBuilder](http://www.rubydoc.info/gems/serial/Serial/HashBuilder), [Serial::ArrayBuilder](http://www.rubydoc.info/gems/serial/Serial/ArrayBuilder)*
+*Full reference: [Serial::HashBuilder](http://www.rubydoc.info/gems/serial/Serial/HashBuilder), [Serial::ArrayBuilder](http://www.rubydoc.info/gems/serial/Serial/ArrayBuilder).*
 
 - All keys are turned into strings.
 - There is no automatic camel-casing. You name your keys the way you want them.
