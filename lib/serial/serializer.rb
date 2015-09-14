@@ -8,9 +8,9 @@ module Serial
     #     h.attribute(:name, person.name)
     #   end
     #
-    # @yield [builder, *args]
+    # @yield [builder, value]
     # @yieldparam builder [HashBuilder]
-    # @yieldparam *args
+    # @yieldparam value from #call or #map
     def initialize(&block)
       @block = block
     end
@@ -49,7 +49,7 @@ module Serial
     #     render json: Person::Serializer.call(person)
     #   end
     #
-    # @param context
+    # @param [#instance_exec] context
     # @param value
     # @return [Hash]
     def call(context = nil, value)
