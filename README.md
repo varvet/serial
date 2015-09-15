@@ -8,7 +8,7 @@
 
 *Psst, full documentation can be found at [rubydoc.info/gems/serial](http://www.rubydoc.info/gems/serial)*
 
-Serial is a short and simple serialization library. Its primary purpose is to generate simple
+Serial is a light-weight and simple serialization library. Its primary purpose is to generate primitive
 datastructures from object graphs, in other words to help you serialize your data.
 
 Serial is sponsored by [Elabs][].
@@ -30,53 +30,82 @@ And then execute:
 
     $ bundle
 
-## Example usage
+## The DSL
 
-*Full reference: [Serial::Serializer](http://www.rubydoc.info/gems/serial/Serial/Serializer).*
+*Full reference: [Serial::HashBuilder](http://www.rubydoc.info/gems/serial/Serial/HashBuilder), [Serial::ArrayBuilder](http://www.rubydoc.info/gems/serial/Serial/ArrayBuilder).*
 
-- Context parameter (when using `#call` and `#map`) is optional, if not provided regular block scoping rules apply.
-- Tip: include [Serial::RailsHelpers](http://www.rubydoc.info/gems/serial/Serial/RailsHelpers) in ApplicationController for a convenient `#serialize` method.
+- All keys are turned into strings.
+- There is no automatic camel-casing. You name your keys the way you want them.
 
-### Using with Rails
+### Simple attributes
 
 ``` ruby
-# app/serializers/person_serializer.rb
-PersonSerializer = Serial::Serializer.new do |h, person|
-  h.attribute(:id, person.id)
-  h.attribute(:name, person.name)
-end
-
-# app/serializers/project_serializer.rb
 ProjectSerializer = Serial::Serializer.new do |h, project|
   h.attribute(:id, project.id)
-  h.attribute(:projectName, project.name)
+  h.attribute(:displayName, project.display_name)
+end # => { "id" => …, "displayName" => … }
+```
 
-  h.attribute(:client, project.client) do |h, client|
-    h.attribute(:id, client.id)
-    h.attribute(:name, client.name)
+### Nested attributes
+
+``` ruby
+ProjectSerializer = Serial::Serializer.new do |h, project|
+  h.attribute(:owner, project.owner) do |h, owner|
+    h.attribute(:name, owner.name)
   end
+end # => { "owner" => { "name" => … } }
+```
 
-  h.attribute(:person, assignment.person, &PersonSerializer)
+### Collections
 
+`#map` is a convenient method for serializing lists of items.
+
+``` ruby
+ProjectSerializer = Serial::Serializer.new do |h, project|
   h.map(:assignments, project.assignments) do |h, assignment|
     h.attribute(:id, assignment.id)
     h.attribute(:duration, assignment.duration)
   end
-end
-
-# app/controllers/project_controller.rb
-class ProjectController < ApplicationController
-  include Serial::RailsHelpers
-
-  def show
-    project = Project.find(…)
-    render json: serialize(project) # { "id" => …, "projectName" => …, "client" => { … }, … }
-
-    # equivalent alternative to above, without using `#serialize` from RailsHelpers:
-    render json: ProjectSerializer.call(self, project)
-  end
-end
+end # => { "assignments" => [{ "id" => …, "duration" => … }, …] }
 ```
+
+The low-level interface powering `#map` is `#collection`.
+
+``` ruby
+ProjectSerializer = Serial::Serializer.new do |h, project|
+  h.collection(:indices) do |l|
+    l.element { |h| h.attribute(…)  }
+    l.element { |h| h.attribute(…)  }
+
+    l.collection do |l|
+      l.element { … }
+      l.element { … }
+    end
+  end
+end # => { "indices" => [{…}, {…}, [{…}, {…}]] }
+```
+
+### Composition
+
+You can compose serializers by passing them as blocks to the DSL methods.
+
+``` ruby
+PersonSerializer = Serial::Serializer.new do |h, person|
+  h.attribute(:name, person.name)
+end # => { "name" => … }
+
+ProjectSerializer = Serial::Serializer.new do |h, project|
+  h.attribute(:owner, project.owner, &PersonSerializer)
+  h.map(:people, project.people, &PersonSerializer)
+end # { "owner" => { "name" => … }, "people" => [{ "name" => … }, …] }
+```
+
+## Using your serializers
+
+*Full reference: [Serial::Serializer](http://www.rubydoc.info/gems/serial/Serial/Serializer).*
+
+- The context parameter in the below examples (when using `#call` and `#map`) is optional, if not provided regular block scoping rules apply.
+- Tip: include [Serial::RailsHelpers](http://www.rubydoc.info/gems/serial/Serial/RailsHelpers) in ApplicationController for a convenient `#serialize` method.
 
 ### Serializing a single object
 
@@ -94,67 +123,22 @@ context = self
 ProjectSerializer.map(context, project) # => [{ … }, …]
 ```
 
-### Serializer composition
+### Using with Rails
 
 ``` ruby
-ProjectSerializer = Serial::Serializer.new do |h, project|
-  h.attribute(:owner, project.owner, &PersonSerializer)
-  h.map(:people, project.people, &PersonSerializer)
-end
-```
+# app/controllers/project_controller.rb
+class ProjectController < ApplicationController
+  include Serial::RailsHelpers
 
-## The DSL
+  def show
+    project = Project.find(…)
 
-*Full reference: [Serial::HashBuilder](http://www.rubydoc.info/gems/serial/Serial/HashBuilder), [Serial::ArrayBuilder](http://www.rubydoc.info/gems/serial/Serial/ArrayBuilder).*
+    # 1. Using helper from RailsHelpers.
+    render json: serialize(project)
 
-- All keys are turned into strings.
-- There is no automatic camel-casing. You name your keys the way you want them.
-
-### Simple attributes
-
-``` ruby
-ProjectSerializer = Serial::Serializer.new do |h, project|
-  h.attribute(:id, project.id)
-  h.attribute(:displayName, project.display_name)
-end
-```
-
-### Nested attributes
-
-``` ruby
-ProjectSerializer = Serial::Serializer.new do |h, project|
-  h.attribute(:owner, project.owner) do |h, owner|
-    h.attribute(:name, owner.name)
+    # 2. Explicitly mentioning serializer.
+    render json: ProjectSerializer.call(self, project)
   end
-end
-```
-
-### Collections
-
-`#map` is a convenient method for serializing lists of items.
-
-``` ruby
-ProjectSerializer = Serial::Serializer.new do |h, project|
-  h.map(:assignments, project.assignments) do |h, assignment|
-    h.attribute(:id, assignment.id)
-    h.attribute(:duration, assignment.duration)
-  end
-end
-```
-
-The low-level interface powering `#map` is `#collection`.
-
-``` ruby
-ProjectSerializer = Serial::Serializer.new do |h, project|
-  h.collection(:indices) do |l|
-    l.element { |h| h.attribute(…)  }
-    l.element { |h| h.attribute(…)  }
-
-    l.collection do |l|
-      l.element { … }
-      l.element { … }
-    end
-  end # => [{…}, {…}, [{…}, {…}]]
 end
 ```
 
