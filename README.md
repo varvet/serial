@@ -30,9 +30,14 @@ And then execute:
 
     $ bundle
 
-## Using Serial
+## Example usage
 
 *Full reference: [Serial::Serializer](http://www.rubydoc.info/gems/serial/Serial/Serializer).*
+
+- Context parameter (when using `#call` and `#map`) is optional, if not provided regular block scoping rules apply.
+- Tip: include [Serial::RailsHelpers](http://www.rubydoc.info/gems/serial/Serial/RailsHelpers) in ApplicationController for a convenient `#serialize` method.
+
+### Using with Rails
 
 ``` ruby
 # app/serializers/person_serializer.rb
@@ -60,9 +65,16 @@ ProjectSerializer = Serial::Serializer.new do |h, project|
 end
 
 # app/controllers/project_controller.rb
-def show
-  project = Project.find(…)
-  render json: ProjectSerializer.call(self, project) # { "id" => …, "projectName" => …, "client" => { … }, … }
+class ProjectController < ApplicationController
+  include Serial::RailsHelpers
+
+  def show
+    project = Project.find(…)
+    render json: serialize(project) # { "id" => …, "projectName" => …, "client" => { … }, … }
+
+    # equivalent alternative to above, without using `#serialize` from RailsHelpers:
+    render json: ProjectSerializer.call(self, project)
+  end
 end
 ```
 
