@@ -23,7 +23,7 @@ Serial is sponsored by [Elabs][].
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'serial'
+gem "serial"
 ```
 
 And then execute:
