@@ -6,8 +6,8 @@ require 'serial/version'
 Gem::Specification.new do |spec|
   spec.name          = "serial"
   spec.version       = Serial::VERSION
-  spec.authors       = ["Jonas Nicklas", "Kim Burgestrand"]
-  spec.email         = ["jonas@elabs.se", "kim@elabs.se"]
+  spec.authors       = ["Elabs", "Jonas Nicklas", "Kim Burgestrand"]
+  spec.email         = ["dev@elabs.se", "jonas@elabs.se", "kim@elabs.se"]
   spec.license       = "MIT"
 
   spec.summary       = %q{Plain old Ruby for generating primitive data structures from object graphs.}
