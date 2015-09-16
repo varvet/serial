@@ -18,7 +18,7 @@ module Serial
       end
 
       @block = block
-      @proc = lambda { |builder, *args| builder.exec(*args, &block) }
+      @to_proc = method(:to_proc_implementation).to_proc
     end
 
     # Serialize an object with this serializer, optionally within a context.
@@ -99,8 +99,12 @@ module Serial
     #   end
     #
     # @return [Proc]
-    def to_proc
-      @proc
+    attr_reader :to_proc
+
+    private
+
+    def to_proc_implementation(builder, *args)
+      builder.exec(*args, &@block)
     end
   end
 end
