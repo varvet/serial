@@ -78,8 +78,9 @@ module Serial
     #   end
     #
     # @see #call see #call for an explanation of the context parameter
-    # @param (see #call)
-    # @return [Array]
+    # @param context (see #call)
+    # @param list [#map]
+    # @return [Array<Hash>]
     def map(context = nil, list)
       list.map { |item| call(context, item) }
     end
