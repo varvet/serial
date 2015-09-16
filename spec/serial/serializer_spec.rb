@@ -26,6 +26,12 @@ describe Serial::Serializer do
     end
   end
 
+  describe "#initialize" do
+    it "raises an error if block is not provided" do
+      expect { Serial::Serializer.new }.to raise_error(ArgumentError, /block/)
+    end
+  end
+
   describe "#call" do
     specify "without context the serializer is executed inside the context" do
       expect(friend_serializer.call(person_with_friend)).to eq({

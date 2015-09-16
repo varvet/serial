@@ -13,6 +13,10 @@ module Serial
     # @yieldparam builder [HashBuilder]
     # @yieldparam value from {#call} or {#map}
     def initialize(&block)
+      unless block_given?
+        raise ArgumentError, "instructions (block) is required"
+      end
+
       @block = block
       @proc = lambda { |builder, *args| builder.exec(*args, &block) }
     end
