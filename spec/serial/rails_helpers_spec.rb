@@ -41,16 +41,19 @@ describe Serial::RailsHelpers do
 
   describe "#serialize" do
     it "serializes a single person in the controller context" do
-      FakePerson.create!(name: "Yngve")
+      person = FakePerson.create!(name: "Yngve")
 
-      expect(serialize(FakePerson.first!)).to eq({ "name" => "Yngve", "url" => "/people/yngve" })
+      expect(serialize(person)).to eq({ "name" => "Yngve", "url" => "/people/yngve" })
     end
 
     it "serializes multiple people in the controller context" do
       FakePerson.create!(name: "Yngve")
       FakePerson.create!(name: "Ylva")
 
-      expect(serialize(FakePerson.order(:name).all)).to eq([
+      # Using ActiveRecord scope here, it's important.
+      people = FakePerson.order(:name).all
+
+      expect(serialize(people)).to eq([
         { "name" => "Ylva", "url" => "/people/ylva" },
         { "name" => "Yngve", "url" => "/people/yngve" },
       ])
