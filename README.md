@@ -1,9 +1,9 @@
 # Serial
 
-[![Build Status](https://img.shields.io/travis/elabs/serial.svg)](http://travis-ci.org/elabs/serial)
-[![Dependency Status](https://img.shields.io/gemnasium/elabs/serial.svg)](https://gemnasium.com/elabs/serial)
-[![Code Climate](https://img.shields.io/codeclimate/github/elabs/serial.svg)](https://codeclimate.com/github/elabs/serial)
-[![Gem Version](https://img.shields.io/gem/v/serial.svg)](http://badge.fury.io/rb/serial)
+[![Build Status](https://travis-ci.org/elabs/serial.svg?branch=master)](http://travis-ci.org/elabs/serial)
+[![Dependency Status](https://gemnasium.com/elabs/serial.svg)](https://gemnasium.com/elabs/serial)
+[![Code Climate](https://codeclimate.com/github/elabs/serial)](https://codeclimate.com/github/elabs/serial)
+[![Gem Version](https://badge.fury.io/rb/serial.svg)](http://badge.fury.io/rb/serial)
 [![Inline docs](http://inch-ci.org/github/elabs/serial.svg?branch=master&style=shields)](http://inch-ci.org/github/elabs/serial)
 
 *Psst, full documentation can be found at [rubydoc.info/gems/serial](http://www.rubydoc.info/gems/serial)*
