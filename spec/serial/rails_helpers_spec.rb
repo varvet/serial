@@ -24,6 +24,12 @@ FakePersonSerializer = Serial::Serializer.new do |h, person|
   h.attribute(:url, person_url(person))
 end
 
+class FakeContext
+  def person_url(person)
+    "/fake/#{person.name.downcase}"
+  end
+end
+
 describe Serial::RailsHelpers do
   include Serial::RailsHelpers
 
@@ -43,6 +49,7 @@ describe Serial::RailsHelpers do
     let(:custom_serializer) do
       Serial::Serializer.new do |h, person|
         h.attribute(:rawrwrwr, person.name)
+        h.attribute(:url, person_url(person))
       end
     end
 
@@ -53,8 +60,16 @@ describe Serial::RailsHelpers do
         expect(serialize(person)).to eq({ "name" => "Yngve", "url" => "/people/yngve" })
       end
 
+      it "allows overriding the context" do
+        expect(serialize(FakeContext.new, person)).to eq({ "name" => "Yngve", "url" => "/fake/yngve" })
+      end
+
       it "accepts the serializer as a block" do
-        expect(serialize(person, &custom_serializer)).to eq({ "rawrwrwr" => "Yngve" })
+        expect(serialize(person, &custom_serializer)).to eq({ "rawrwrwr" => "Yngve", "url" => "/people/yngve" })
+      end
+
+      it "allows overriding the context with an overridden serializer" do
+        expect(serialize(FakeContext.new, person, &custom_serializer)).to eq({ "rawrwrwr" => "Yngve", "url" => "/fake/yngve" })
       end
     end
 
@@ -74,10 +89,24 @@ describe Serial::RailsHelpers do
         ])
       end
 
+      it "allows overriding the context" do
+        expect(serialize(FakeContext.new, people)).to eq([
+          { "name" => "Ylva", "url" => "/fake/ylva" },
+          { "name" => "Yngve", "url" => "/fake/yngve" },
+        ])
+      end
+
       it "accepts the serializer as a block" do
         expect(serialize(people, &custom_serializer)).to eq([
-          { "rawrwrwr" => "Ylva" },
-          { "rawrwrwr" => "Yngve" },
+          { "rawrwrwr" => "Ylva", "url" => "/people/ylva" },
+          { "rawrwrwr" => "Yngve", "url" => "/people/yngve" },
+        ])
+      end
+
+      it "allows overriding the context with an overridden serializer" do
+        expect(serialize(FakeContext.new, people, &custom_serializer)).to eq([
+          { "rawrwrwr" => "Ylva", "url" => "/fake/ylva" },
+          { "rawrwrwr" => "Yngve", "url" => "/fake/yngve" },
         ])
       end
     end
