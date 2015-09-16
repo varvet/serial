@@ -136,7 +136,10 @@ class ProjectController < ApplicationController
     # 1. Using helper from RailsHelpers.
     render json: serialize(project)
 
-    # 2. Explicitly mentioning serializer.
+    # 2. Explicitly mentioning serializer using helper method.
+    render json: serialize(project, &ProjectSerializer)
+
+    # 3. Explicitly mentioning serializer.
     render json: ProjectSerializer.call(self, project)
   end
 end
