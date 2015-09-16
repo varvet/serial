@@ -12,15 +12,19 @@ module Serial
     # @example serializing with explicit context
     #   render json: { people: serialize(presenter, Person.all) }
     #
+    # @example serializing with explicit serializer
+    #   render json: { people: serialize(Person.all, &my_serializer) }
+    #
     # @param context [#instance_exec]
     # @param model [#model_name, #each?]
-    def serialize(context = self, model)
-      klass = "#{model.model_name}Serializer".constantize
+    def serialize(context = self, model, &serializer)
+      serializer &&= Serializer.new(&serializer)
+      serializer ||= "#{model.model_name}Serializer".constantize
 
-      if model.respond_to?(:each)
-        klass.map(context, model)
+      if model.respond_to?(:map)
+        serializer.map(context, model)
       else
-        klass.call(context, model)
+        serializer.call(context, model)
       end
     end
   end

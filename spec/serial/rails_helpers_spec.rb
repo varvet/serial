@@ -40,23 +40,46 @@ describe Serial::RailsHelpers do
   end
 
   describe "#serialize" do
-    it "serializes a single person in the controller context" do
-      person = FakePerson.create!(name: "Yngve")
-
-      expect(serialize(person)).to eq({ "name" => "Yngve", "url" => "/people/yngve" })
+    let(:custom_serializer) do
+      Serial::Serializer.new do |h, person|
+        h.attribute(:rawrwrwr, person.name)
+      end
     end
 
-    it "serializes multiple people in the controller context" do
-      FakePerson.create!(name: "Yngve")
-      FakePerson.create!(name: "Ylva")
+    describe "a single model" do
+      let(:person) { FakePerson.create!(name: "Yngve") }
+
+      it "serializes a single person in the controller context" do
+        expect(serialize(person)).to eq({ "name" => "Yngve", "url" => "/people/yngve" })
+      end
+
+      it "accepts the serializer as a block" do
+        expect(serialize(person, &custom_serializer)).to eq({ "rawrwrwr" => "Yngve" })
+      end
+    end
+
+    describe "a list of models" do
+      before do
+        FakePerson.create!(name: "Yngve")
+        FakePerson.create!(name: "Ylva")
+      end
 
       # Using ActiveRecord scope here, it's important.
-      people = FakePerson.order(:name).all
+      let(:people) { FakePerson.order(:name).all }
 
-      expect(serialize(people)).to eq([
-        { "name" => "Ylva", "url" => "/people/ylva" },
-        { "name" => "Yngve", "url" => "/people/yngve" },
-      ])
+      it "serializes multiple people in the controller context" do
+        expect(serialize(people)).to eq([
+          { "name" => "Ylva", "url" => "/people/ylva" },
+          { "name" => "Yngve", "url" => "/people/yngve" },
+        ])
+      end
+
+      it "accepts the serializer as a block" do
+        expect(serialize(people, &custom_serializer)).to eq([
+          { "rawrwrwr" => "Ylva" },
+          { "rawrwrwr" => "Yngve" },
+        ])
+      end
     end
   end
 end
