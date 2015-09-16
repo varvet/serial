@@ -14,6 +14,7 @@ module Serial
     # @yieldparam value from {#call} or {#map}
     def initialize(&block)
       @block = block
+      @proc = lambda { |builder, *args| builder.exec(*args, &block) }
     end
 
     # Serialize an object with this serializer, optionally within a context.
@@ -95,10 +96,7 @@ module Serial
     #
     # @return [Proc]
     def to_proc
-      block = @block
-      proc do |builder, *args|
-        builder.exec(*args, &block)
-      end
+      @proc
     end
   end
 end
