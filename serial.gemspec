@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jonas@elabs.se", "kim@elabs.se"]
   spec.license       = "MIT"
 
-  spec.summary       = %q{Plain old Ruby for generating simple data structures from object graphs.}
+  spec.summary       = %q{Plain old Ruby for generating primitive data structures from object graphs.}
   spec.homepage      = "https://github.com/elabs/serial"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
@@ -23,5 +23,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.2"
   spec.add_development_dependency "yard", "~> 0.8"
   spec.add_development_dependency "activerecord", "~> 4.0"
-  spec.add_development_dependency "sqlite3", "~> 1.0"
 end

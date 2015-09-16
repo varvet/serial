@@ -1,6 +1,12 @@
 require "active_record"
 
-ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
+adapter = if RUBY_ENGINE == "jruby"
+  "jdbcsqlite3"
+else
+  "sqlite3"
+end
+
+ActiveRecord::Base.establish_connection(adapter: adapter, database: ":memory:")
 ActiveRecord::Schema.define do
   self.verbose = false
   create_table :fake_people, :force => true do |t|
