@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/elabs/serial.svg?branch=master)](http://travis-ci.org/elabs/serial)
 [![Dependency Status](https://gemnasium.com/elabs/serial.svg)](https://gemnasium.com/elabs/serial)
-[![Code Climate](https://codeclimate.com/github/elabs/serial)](https://codeclimate.com/github/elabs/serial)
+[![Code Climate](https://codeclimate.com/github/elabs/serial/badges/gpa.svg)](https://codeclimate.com/github/elabs/serial)
 [![Gem Version](https://badge.fury.io/rb/serial.svg)](http://badge.fury.io/rb/serial)
 [![Inline docs](http://inch-ci.org/github/elabs/serial.svg?branch=master&style=shields)](http://inch-ci.org/github/elabs/serial)
 
