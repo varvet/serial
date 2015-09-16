@@ -115,12 +115,12 @@ context = self
 ProjectSerializer.call(context, project) # => { … }
 ```
 
-### Serializing an array
+### Serializing a list of objects
 
 ``` ruby
-project = Project.all
+projects = Project.all
 context = self
-ProjectSerializer.map(context, project) # => [{ … }, …]
+ProjectSerializer.map(context, projects) # => [{ … }, …]
 ```
 
 ### Using with Rails
