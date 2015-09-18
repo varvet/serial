@@ -125,6 +125,13 @@ ProjectSerializer.map(context, projects) # => [{ … }, …]
 
 ### Using with Rails
 
+```ruby
+# app/serializers/project_serializer.rb
+ProjectSerializer = Serial::Serializer.new do |h, project|
+  …
+end
+```
+
 ``` ruby
 # app/controllers/project_controller.rb
 class ProjectController < ApplicationController
