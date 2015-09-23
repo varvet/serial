@@ -116,6 +116,38 @@ module Serial
       end
     end
 
+    # @api public
+    # Merge another serializer into the current serialization.
+    #
+    # @example
+    #   ExtendedProjectSerializer = Serial::Serializer.new do |h, project|
+    #     h.merge(project, &ProjectSerializer)
+    #     h.attribute(:extra, project.extra_info)
+    #   end # => { "name" => …, …, "extra" => … }
+    #
+    # @param value
+    # @yield [builder, value] to another serializer
+    # @yieldparam builder [HashBuilder]
+    # @yieldparam value
+    # @raise [DuplicateKeyError] if a key to be merged is already defined.
+    def merge(value, &serializer)
+      hash = HashBuilder.build(@context, value, &serializer)
+      hash.keys.each { |key| check_duplicate_key!(key) }
+      @data.merge!(hash)
+    end
+
+    # @api public
+    # Same as {#merge}, but will not raise an error on duplicate keys.
+    #
+    # @see #merge
+    # @param (see #merge)
+    # @yield (see #merge)
+    # @yieldparam (see #merge)
+    def merge!(value, &serializer)
+      hash = HashBuilder.build(@context, value, &serializer)
+      @data.merge!(hash)
+    end
+
     private
 
     # @param key [#to_s]

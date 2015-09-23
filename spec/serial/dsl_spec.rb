@@ -4,6 +4,12 @@ describe "Serial DSL" do
   end
 
   describe "HashBuilder" do
+    let(:report_serializer) do
+      Serial::Serializer.new do |h, subject|
+        h.attribute(:name, subject)
+      end
+    end
+
     describe "#attribute" do
       it "serializes simple attributes" do
         data = serialize { |h| h.attribute(:hello, "World") }
@@ -97,6 +103,27 @@ describe "Serial DSL" do
       end
     end
 
+    describe "#merge" do
+      it "merges a serializer into the current scope" do
+        data = serialize do |h|
+          h.attribute(:extended, "Extended")
+          h.merge("Hi", &report_serializer)
+        end
+
+        expect(data).to eq({ "name" => "Hi", "extended" => "Extended" })
+      end
+
+      it "explodes if a merged attribute already exists" do
+        full_report_serializer = Serial::Serializer.new do |h|
+          h.attribute(:name, "Replaced")
+          h.attribute(:extended, "Extended")
+          h.merge("Hi", &report_serializer)
+        end
+
+        expect { full_report_serializer.call(nil) }.to raise_error(Serial::DuplicateKeyError, "'name' is already defined")
+      end
+    end
+
     describe "!-methods" do
       describe "#attribute!" do
         it "does not explode if the attribute already exists" do
@@ -134,6 +161,18 @@ describe "Serial DSL" do
           end
 
           expect(serializer.call(nil)).to eq({ "hi" => [{ "id" => 1 }] })
+        end
+      end
+
+      describe "#merge!" do
+        it "does not explode if a merged attribute already exists" do
+          full_report_serializer = Serial::Serializer.new do |h|
+            h.attribute(:name, "Replaced")
+            h.attribute(:extended, "Extended")
+            h.merge!("Hi", &report_serializer)
+          end
+
+          expect(full_report_serializer.call(nil)).to eq({ "name" => "Hi", "extended" => "Extended" })
         end
       end
     end
