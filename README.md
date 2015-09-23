@@ -36,7 +36,8 @@ And then execute:
 
 - All keys are turned into strings.
 - There is no automatic camel-casing. You name your keys the way you want them.
-- Specifying the same key twice will raise an error. If you want to override the value for a key, use the appropriate bang-method: `#attribute!`, `#collection!`, or `#map!`.
+- Using the same key twice will raise an error by default.
+- To override the value for an existing key, use `#attribute!`, `#collection!`, or `#map!`.
 
 ### Simple attributes
 
