@@ -37,9 +37,11 @@ And then execute:
 - All keys are turned into strings.
 - There is no automatic camel-casing. You name your keys the way you want them.
 - Using the same key twice will raise an error by default.
-- To override the value for an existing key, use `#attribute!`, `#collection!`, or `#map!`.
+- To override the value for an existing key, use the respective !-method DSL, i.e. `#attribute!`, `#collection!`, `#map!`, or `#merge!`.
 
 ### Simple attributes
+
+`#attribute` creates a simple attribute with a value.
 
 ``` ruby
 ProjectSerializer = Serial::Serializer.new do |h, project|
@@ -49,6 +51,8 @@ end # => { "id" => …, "displayName" => … }
 ```
 
 ### Nested attributes
+
+`#attribute` supports nesting by giving it a block.
 
 ``` ruby
 ProjectSerializer = Serial::Serializer.new do |h, project|
@@ -85,6 +89,21 @@ ProjectSerializer = Serial::Serializer.new do |h, project|
     end
   end
 end # => { "indices" => [{…}, {…}, [{…}, {…}]] }
+```
+
+### Merging
+
+`#merge` will let you merge another serializer without introducing a new nesting level.
+
+``` ruby
+ProjectSerializer = Serial::Serializer.new do |h, project|
+  h.attribute(:name, project.name)
+end # => { "name" => … }
+
+FullProjectSerializer = Serial::Serializer.new do |h, project|
+  h.merge(project, &ProjectSerializer)
+  h.attribute(:description, project.description)
+end # { "name" => …, "description" => … }
 ```
 
 ### Composition
