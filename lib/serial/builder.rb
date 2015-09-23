@@ -30,8 +30,10 @@ module Serial
     def exec(*args, &block)
       if @context
         @context.instance_exec(self, *args, &block)
-      else
+      elsif block
         block.call(self, *args)
+      else
+        raise ArgumentError, "no serializer block given"
       end
     end
   end
