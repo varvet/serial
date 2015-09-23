@@ -102,8 +102,8 @@ end # => { "name" => … }
 
 FullProjectSerializer = Serial::Serializer.new do |h, project|
   h.merge(project, &ProjectSerializer)
-  h.attribute(:extras, project.extras)
-end # { "name" => …, "extras" => … }
+  h.attribute(:description, project.description)
+end # { "name" => …, "description" => … }
 ```
 
 ### Composition
