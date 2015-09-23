@@ -96,8 +96,8 @@ end # => { "indices" => [{…}, {…}, [{…}, {…}]] }
 `#merge` will let you merge another serializer without introducing a new nesting level.
 
 ``` ruby
-ProjectSerializer = Serial::Serializer.new do |h, person|
-  h.attribute(:name, person.name)
+ProjectSerializer = Serial::Serializer.new do |h, project|
+  h.attribute(:name, project.name)
 end # => { "name" => … }
 
 FullProjectSerializer = Serial::Serializer.new do |h, project|
