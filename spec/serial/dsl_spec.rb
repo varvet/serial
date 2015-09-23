@@ -39,7 +39,7 @@ describe "Serial DSL" do
           h.attribute(:hi, "b")
         end
 
-        expect { serializer.call(nil, nil) }.to raise_error(Serial::DuplicateKeyError, "'hi' is already defined")
+        expect { serializer.call(nil) }.to raise_error(Serial::DuplicateKeyError, "'hi' is already defined")
       end
     end
 
@@ -69,7 +69,7 @@ describe "Serial DSL" do
           end
         end
 
-        expect { serializer.call(nil, nil) }.to raise_error(Serial::DuplicateKeyError, "'hi' is already defined")
+        expect { serializer.call(nil) }.to raise_error(Serial::DuplicateKeyError, "'hi' is already defined")
       end
     end
 
@@ -93,7 +93,7 @@ describe "Serial DSL" do
           end
         end
 
-        expect { serializer.call(nil, nil) }.to raise_error(Serial::DuplicateKeyError, "'hi' is already defined")
+        expect { serializer.call(nil) }.to raise_error(Serial::DuplicateKeyError, "'hi' is already defined")
       end
     end
 
@@ -105,7 +105,7 @@ describe "Serial DSL" do
             h.attribute!(:hi, "b")
           end
 
-          expect(serializer.call(nil, nil)).to eq({ "hi" => "b" })
+          expect(serializer.call(nil)).to eq({ "hi" => "b" })
         end
       end
 
@@ -118,7 +118,7 @@ describe "Serial DSL" do
             end
           end
 
-          expect(serializer.call(nil, nil)).to eq({ "hi" => [{ "id" => 1 }] })
+          expect(serializer.call(nil)).to eq({ "hi" => [{ "id" => 1 }] })
         end
       end
 
@@ -133,7 +133,7 @@ describe "Serial DSL" do
             end
           end
 
-          expect(serializer.call(nil, nil)).to eq({ "hi" => [{ "id" => 1 }] })
+          expect(serializer.call(nil)).to eq({ "hi" => [{ "id" => 1 }] })
         end
       end
     end
