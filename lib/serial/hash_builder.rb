@@ -26,7 +26,8 @@ module Serial
     # @yieldparam value
     # @raise [DuplicateKeyError] if the same key has already been defined.
     def attribute(key, value = nil, &block)
-      check_duplicate_key(key) or attribute!(key, value, &block)
+      check_duplicate_key!(key)
+      attribute!(key, value, &block)
     end
 
     # Same as {#attribute}, but will not raise an error on duplicate keys.
@@ -63,7 +64,8 @@ module Serial
     # @yield [builder]
     # @yieldparam builder [ArrayBuilder]
     def collection(key, &block)
-      check_duplicate_key(key) or collection!(key, &block)
+      check_duplicate_key!(key)
+      collection!(key, &block)
     end
 
     # Same as {#collection}, but will not raise an error on duplicate keys.
@@ -91,7 +93,8 @@ module Serial
     # @yieldparam builder [HashBuilder]
     # @yieldparam value
     def map(key, list, &block)
-      check_duplicate_key(key) or map!(key, list, &block)
+      check_duplicate_key!(key)
+      map!(key, list, &block)
     end
 
     # Same as {#map}, but will not raise an error on duplicate keys.
@@ -115,7 +118,7 @@ module Serial
     # @param key [#to_s]
     # @raise [DuplicateKeyError] if key is defined
     # @return [nil]
-    def check_duplicate_key(key)
+    def check_duplicate_key!(key)
       if @data.has_key?(key.to_s)
         raise DuplicateKeyError, "'#{key}' is already defined"
       end
