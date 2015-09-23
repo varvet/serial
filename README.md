@@ -168,7 +168,7 @@ git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygem
 Bug reports and pull requests are welcome on GitHub at
 https://github.com/elabs/serial. This project is intended to be a safe,
 welcoming space for collaboration, and contributors are expected to adhere to
-the [Contributor Covenant](contributor-covenant.org) code of conduct.
+the [Contributor Covenant](CODE_OF_CONDUCT.md) code of conduct.
 
 ## License
 
