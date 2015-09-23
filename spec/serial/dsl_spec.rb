@@ -1,6 +1,6 @@
 describe "Serial DSL" do
-  def serialize(&block)
-    Serial::Serializer.new(&block).call(nil, nil)
+  def serialize(subject = nil, &block)
+    Serial::Serializer.new(&block).call(nil, subject)
   end
 
   describe "HashBuilder" do
@@ -17,6 +17,12 @@ describe "Serial DSL" do
         end
 
         expect(data).to eq({ "hi" => { "hello" => "World" } })
+      end
+
+      it "forwards value when serializing simple attributes" do
+        data = serialize("World") { |h, x| h.attribute(:hello, x) }
+
+        expect(data).to eq({ "hello" => "World" })
       end
 
       it "forwards value when serializing nested attributes" do
