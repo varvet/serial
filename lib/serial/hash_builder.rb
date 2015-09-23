@@ -30,6 +30,7 @@ module Serial
       attribute!(key, value, &block)
     end
 
+    # @api public
     # Same as {#attribute}, but will not raise an error on duplicate keys.
     #
     # @see #attribute
@@ -68,6 +69,7 @@ module Serial
       collection!(key, &block)
     end
 
+    # @api public
     # Same as {#collection}, but will not raise an error on duplicate keys.
     #
     # @see #collection
@@ -97,6 +99,7 @@ module Serial
       map!(key, list, &block)
     end
 
+    # @api public
     # Same as {#map}, but will not raise an error on duplicate keys.
     #
     # @see #map

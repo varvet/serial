@@ -1,6 +1,7 @@
 module Serial
   # Helpers for using Serial with Rails.
   module RailsHelpers
+    # @api public
     # Find the serializer for `model` and serialize it in the context of self.
     #
     # @example serializing a single object
@@ -17,6 +18,8 @@ module Serial
     #
     # @param context [#instance_exec]
     # @param model [#model_name, #each?]
+    # @yield [builder, model] yields if a block is given to use a custom serializer
+    # @yieldparam builder [HashBuilder]
     def serialize(context = self, model, &serializer)
       serializer &&= Serializer.new(&serializer)
       serializer ||= "#{model.model_name}Serializer".constantize
