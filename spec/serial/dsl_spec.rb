@@ -26,6 +26,15 @@ describe "Serial DSL" do
 
         expect(data).to eq({ "hi" => { "hello" => "World" } })
       end
+
+      it "explodes if the attribute already exists" do
+        serializer = Serial::Serializer.new do |h|
+          h.attribute(:hi, "a")
+          h.attribute(:hi, "b")
+        end
+
+        expect { serializer.call(nil, nil) }.to raise_error(Serial::DuplicateKeyError, "'hi' is already defined")
+      end
     end
 
     describe "#map" do
@@ -45,6 +54,17 @@ describe "Serial DSL" do
           ]
         })
       end
+
+      it "explodes if the attribute already exists" do
+        serializer = Serial::Serializer.new do |h|
+          h.attribute(:hi, "a")
+          h.map(:hi, [1]) do |h, id|
+            h.attribute(:id, id)
+          end
+        end
+
+        expect { serializer.call(nil, nil) }.to raise_error(Serial::DuplicateKeyError, "'hi' is already defined")
+      end
     end
 
     describe "#collection" do
@@ -55,6 +75,60 @@ describe "Serial DSL" do
         end
 
         expect(data).to eq({ "numbers" => [] })
+      end
+
+      it "explodes if the attribute already exists" do
+        serializer = Serial::Serializer.new do |h|
+          h.attribute(:hi, "a")
+          h.collection(:hi) do |l|
+            l.element do |h|
+              h.attribute(:id, 1)
+            end
+          end
+        end
+
+        expect { serializer.call(nil, nil) }.to raise_error(Serial::DuplicateKeyError, "'hi' is already defined")
+      end
+    end
+
+    describe "!-methods" do
+      describe "#attribute!" do
+        it "does not explode if the attribute already exists" do
+          serializer = Serial::Serializer.new do |h|
+            h.attribute(:hi, "a")
+            h.attribute!(:hi, "b")
+          end
+
+          expect(serializer.call(nil, nil)).to eq({ "hi" => "b" })
+        end
+      end
+
+      describe "#map!" do
+        it "does not explode if the attribute already exists" do
+          serializer = Serial::Serializer.new do |h|
+            h.attribute(:hi, "a")
+            h.map!(:hi, [1]) do |h, id|
+              h.attribute(:id, id)
+            end
+          end
+
+          expect(serializer.call(nil, nil)).to eq({ "hi" => [{ "id" => 1 }] })
+        end
+      end
+
+      describe "#collection!" do
+        it "does not explode if the attribute already exists" do
+          serializer = Serial::Serializer.new do |h|
+            h.attribute(:hi, "a")
+            h.collection!(:hi) do |l|
+              l.element do |h|
+                h.attribute(:id, 1)
+              end
+            end
+          end
+
+          expect(serializer.call(nil, nil)).to eq({ "hi" => [{ "id" => 1 }] })
+        end
       end
     end
   end
