@@ -20,7 +20,7 @@ module Serial
     # @param model [#model_name, #each?]
     # @yield [builder, model] yields if a block is given to use a custom serializer
     # @yieldparam builder [HashBuilder]
-    def serialize(context = self, model, &serializer)
+    def serialize(context = view_context, model, &serializer)
       serializer &&= Serializer.new(&serializer)
       serializer ||= "#{model.model_name}Serializer".constantize
 

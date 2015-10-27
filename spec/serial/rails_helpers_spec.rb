@@ -33,6 +33,10 @@ end
 describe Serial::RailsHelpers do
   include Serial::RailsHelpers
 
+  def view_context
+    self
+  end
+
   # Simulate having a route helper in the controller scope (self).
   def person_url(person)
     "/people/#{person.name.downcase}"
