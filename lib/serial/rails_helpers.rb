@@ -24,7 +24,7 @@ module Serial
       serializer &&= Serializer.new(&serializer)
       serializer ||= "#{model.model_name}Serializer".constantize
 
-      if model.respond_to?(:map)
+      if model.respond_to?(:each)
         serializer.map(context, model)
       else
         serializer.call(context, model)

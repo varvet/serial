@@ -79,10 +79,12 @@ module Serial
     #
     # @see #call see #call for an explanation of the context parameter
     # @param context (see #call)
-    # @param list [#map]
+    # @param list [#each]
     # @return [Array<Hash>]
     def map(context = nil, list)
-      list.map { |item| call(context, item) }
+      values = []
+      list.each { |item| values << call(context, item) }
+      values
     end
 
     # Serializer composition!
