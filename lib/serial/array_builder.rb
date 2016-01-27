@@ -20,8 +20,14 @@ module Serial
     #
     # @yield [builder]
     # @yieldparam builder [HashBuilder]
-    def element(&block)
-      @data << HashBuilder.build(@context, &block)
+    def element(value = :__not_used__, &block)
+      if value == :__not_used__
+        @data << HashBuilder.build(@context, &block)
+      elsif not block
+        @data << value
+      else
+        raise ArgumentError, "cannot pass both a block and an argument to `element`"
+      end
     end
 
     # @api public

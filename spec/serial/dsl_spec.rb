@@ -197,6 +197,25 @@ describe "Serial DSL" do
           ]
         })
       end
+
+      it "accepts a value" do
+        data = collection do |l|
+          l.element("hello")
+          l.element("world")
+        end
+
+        expect(data).to eq({
+          "collection" => ["hello", "world"]
+        })
+      end
+
+      it "raises an error when both block and value given" do
+        expect do
+          collection do |l|
+            l.element("hello") { |h| h.attribute(:foo, "bar") }
+          end
+        end.to raise_error(ArgumentError, "cannot pass both a block and an argument to `element`")
+      end
     end
 
     describe "#collection" do
